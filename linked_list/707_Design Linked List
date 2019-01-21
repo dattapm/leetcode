@@ -1,0 +1,155 @@
+/*
+  Solution for leetcode problem: https://leetcode.com/problems/design-linked-list/
+*/
+
+struct Node {
+    int val;
+    Node* next;
+    Node(int val):val(val),next(NULL){};
+};
+
+
+class MyLinkedList {
+    Node* head;
+    Node* tail;
+public:
+    /** Initialize your data structure here. */
+    MyLinkedList() {
+       head = NULL; 
+       tail = head;
+    }
+    
+    /** Get the value of the index-th node in the linked list. If the index is invalid, return -1. */
+    int get(int index) {
+        Node* local = head;
+        int count = 0;
+        
+        while(local != NULL) {
+            if(count == index) {
+                return local->val;
+            }
+            count++;
+            local = local->next;
+        }
+        
+        return -1;
+    }
+    
+    /** Add a node of value val before the first element of the linked list. After the insertion, the new node will be the first node of the linked list. */
+    void addAtHead(int val) {
+       Node* bfr_head = new Node(val);
+        
+       if (bfr_head == NULL) {
+           return;
+       }
+        
+       if(head == NULL) {
+          head = bfr_head;
+          tail = head; 
+       } else {
+          bfr_head->next = head;
+          head = bfr_head; 
+       }
+    }
+        
+    /** Append a node of value val to the last element of the linked list. */
+    void addAtTail(int val) {
+       Node* tail_it = new Node(val);
+        
+       if (tail_it == NULL) {
+           return;
+       }
+       
+        Node* local = head;
+        
+        while(local->next != NULL){
+            local = local->next;
+            
+        }
+        
+        local->next = tail_it;
+        tail = tail_it;
+    }
+    
+    /** Add a node of value val before the index-th node in the linked list. If index equals to the length of linked list, the node will be appended to the end of linked list. If index is greater than the length, the node will not be inserted. */
+    void addAtIndex(int index, int val) {
+        
+        int count = 0;
+        if(index == 0) {
+            addAtHead(val);
+            return;
+        } else {
+            Node* present = head;
+            Node* prev = NULL;
+            
+            while(present) {
+                 if(count == index) {
+                      
+                        Node* add_it = new Node(val);
+                        if (add_it == NULL) {
+                              return;
+                        }
+        
+                        prev->next = add_it;
+                        add_it->next = present;
+                
+                        return;
+                 }
+            
+                 count++;
+                 prev = present;
+                 present = present->next;
+            } // end of while loop.
+            
+        } //end of else.
+        
+        if(index == (count)) {
+            addAtTail(val);
+        }
+      
+    }
+    
+    /** Delete the index-th node in the linked list, if the index is valid. */
+    void deleteAtIndex(int index) {
+        
+        // special case.
+        if(index == 0) {
+            Node* local = head;
+            head = head->next;
+            free(local);
+            
+            return;
+        }
+        
+        // If the index is somewhere in between.
+        int count = 0;
+        Node* prev = NULL;
+        Node* present = head;
+        
+        while(present) {
+            if(count == index) {
+                Node* delete_this_node = present;
+                prev->next = present->next;
+                present = present->next;
+                
+                free(delete_this_node);
+                return;
+            }
+            
+            count++;
+            prev = present;
+            present = present->next;
+        }
+    }
+};
+
+
+/**
+ * Your MyLinkedList object will be instantiated and called as such:
+ * MyLinkedList obj = new MyLinkedList();
+ * int param_1 = obj.get(index);
+ * obj.addAtHead(val);
+ * obj.addAtTail(val);
+ * obj.addAtIndex(index,val);
+ * obj.deleteAtIndex(index);
+ */
