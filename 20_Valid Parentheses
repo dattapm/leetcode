@@ -1,0 +1,40 @@
+/*
+  Solution for leetcode problem: https://leetcode.com/problems/valid-parentheses/
+*/
+
+class Solution {
+public:
+    bool isValid(string s) {
+        stack<char> stk;
+        
+        for(auto i = 0;i < s.size();i++) {
+            if((s[i] == '(') || (s[i] == '[') || (s[i] == '{')) {
+                stk.push(s[i]);
+            } else if ((s[i] == ')') || (s[i] == ']') || (s[i] == '}')) {
+                // perform a pop.
+                
+                if(stk.empty()) {
+                    return false;
+                }
+                char top = stk.top();
+                if (
+                    ((s[i] == ')') && (top == '(')) ||
+                    ((s[i] == ']') && (top == '[')) ||
+                    ((s[i] == '}') && (top == '{'))
+                    ) {
+                    
+                    stk.pop();
+                } else {
+                    return false;
+                }
+                
+            } else {
+                // Invalid character.
+                return false;
+            }
+        } // end of for loop
+        
+        return stk.empty() ? true : false; 
+        
+    } // end of method
+};
