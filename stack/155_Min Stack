@@ -1,0 +1,77 @@
+
+/*
+  Solution for leetcode problem: https://leetcode.com/problems/min-stack/
+*/
+
+
+struct Node {
+    int val;
+    int min_val;
+    Node* next;
+    Node(int val, int min_val):val(val),min_val(min_val),next(NULL){};
+};
+
+class MinStack {
+    Node* head;
+  
+public:
+    /** initialize your data structure here. */
+    MinStack() {
+        head = NULL;
+    }
+    
+    void push(int x) {
+        
+        if(head == NULL) {
+           // stack is empty.
+           Node* local = new Node(x, x);
+           head = local;
+            
+            return;
+        }
+        
+        // stack has elements already.
+        Node* top = head;
+        int min_val = (top->min_val < x) ? top->min_val : x;
+            
+        Node* local = new Node(x, min_val);
+        local->next = head;
+        head = local;
+    }
+    
+    void pop() {
+        if(head == NULL) {
+            return;
+        }
+        // remove the head node.
+        Node* delete_this_node = head;
+        head = head->next;
+        
+        free(delete_this_node);
+    }
+    
+    int top() {
+        if(head == NULL) {
+            return -1;
+        }
+        
+        return head->val;
+    }
+    
+    int getMin() {
+         if(head == NULL) {
+            return -1;
+        }
+        
+        return head->min_val;
+    }
+};
+
+/**
+ * Your MinStack object will be instantiated and called as such:
+ * MinStack obj = new MinStack();
+ * obj.push(x);
+ * obj.pop();
+ * int param_3 = obj.top();
+ * int param_4 = obj.getMin();
+ */
