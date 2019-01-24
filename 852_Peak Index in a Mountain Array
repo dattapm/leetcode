@@ -1,0 +1,40 @@
+/* 
+Solution for leetcode problem: https://leetcode.com/problems/peak-index-in-a-mountain-array/
+*/
+
+class Solution {
+public:
+    /* O(n) solution */
+    
+    /*
+    int peakIndexInMountainArray(vector<int>& A) {
+      for(auto i = 1; i < A.size() - 1;i++) {
+          
+          if((A[i-1] < A[i]) && (A[i] > A[i+1])) {
+              return i;
+          }
+      }
+        
+      return -1;
+    }
+    */
+    
+    /* Using Binary search */
+    int peakIndexInMountainArray(vector<int>& A) {
+       int low = 0; 
+       int high = A.size() - 1;
+       
+        
+       while(low < high) {
+           int mid = low + (high - low)/2;
+           
+           if(A[mid] < A[mid+1]) {
+               low = mid + 1;
+           } else {
+               high = mid;
+           }
+       }// end of while loop
+      
+        return low;
+    }
+};
